@@ -45,6 +45,7 @@ Diagram
 
 Screencast
 ==========
+* (btrfs / luks / lvm setup)
 [![plitc deb8 btrfs luks lvm setup](https://img.youtube.com/vi/uRvd0H_m7pY/0.jpg)](https://www.youtube.com/watch?v=uRvd0H_m7pY)
 
 Errata
