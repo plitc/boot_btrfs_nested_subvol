@@ -469,7 +469,7 @@ sed -i '/\/ *btrfs/s/defaults,subvol=ROOT\/'$CURRDEEP'/defaults,subvol=ROOT\/'$C
 cp /etc/grub.d/40_custom /etc/grub.d/.40_custom_bk_pre_subroot_system-"$DATE"
 awk "/menuentry 'Debian GNU\/Linux'/,/}/" /boot/grub/grub.cfg > /etc/grub.d/.40_custom_mod1_subroot_system-"$DATE"
 #
-sed -i '/menuentry/s/Linux/Linux -- snapshot '$CURRDEEP' subroot '$DATE' -- '$SNAPDESC3'/' /etc/grub.d/.40_custom_mod1_subroot_system-"$DATE"
+sed -i '/menuentry/s/Linux/Linux -- snapshot '$CURRDEEP' SUBROOT '$DATE' -- '$SNAPDESC3'/' /etc/grub.d/.40_custom_mod1_subroot_system-"$DATE"
 #
 sed -i '/vmlinuz/s/$/ rootflags=subvol=ROOT\/'$CURRDEEP'\/SUBROOT\/system-'$DATE'/' /etc/grub.d/.40_custom_mod1_subroot_system-"$DATE"
 sed -i '1i\### -- snapshot '$DATE'' /etc/grub.d/.40_custom_mod1_subroot_system-"$DATE"
