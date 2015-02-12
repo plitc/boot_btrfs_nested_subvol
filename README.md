@@ -41,6 +41,7 @@ Diagram
 ![plitc_debian8_luks_lvm_boot_btrfs_subvol](/content/plitc_debian8_luks_lvm_boot_btrfs_subvol.jpg)
 
 * boot_btrfs_nested_subvol (prototype > 0.8)
+![plitc_debian8_luks_lvm_boot_btrfs_nested_subvol](/content/plitc_debian8_luks_lvm_boot_btrfs_nested_subvol.jpg)
 
 Screencast
 ==========
