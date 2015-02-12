@@ -407,6 +407,13 @@ ROOTSNAPEXIST=$(btrfs subvolume list '/' | grep "ROOT/system-" | awk '{print $9}
 SUBROOTSNAPEXIST=$(btrfs subvolume list '/' | grep "ROOT/system-" | awk '{print $9}' | sed 's/ROOT//g' | sed 's/^.//g' | sed 's/\/SUB//g' | sed 's/\// /g' | awk '{print $2}' | sed '/^\s*$/d' | sort | uniq)
 
 find /etc/grub.d/ -name ".40_custom_*" | egrep -v "$ROOTSNAPEXIST|$SUBROOTSNAPEXIST" | xargs -L1 rm -fv
+
+if [ -z "$ROOTSNAPEXIST" ]; then
+   if [ -z "$SUBROOTSNAPEXIST" ]; then
+      rm -fv /etc/grub.d/.40_custom_*
+   fi
+fi
+
 ### ### ### ### ### ### ### ### ###
 #
 ### // stage4 ###
