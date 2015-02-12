@@ -34,7 +34,7 @@ Usage
     WARNING: subvolboot2 is highly experimental and its not ready for production. Do it at your own risk.
     Current Support: 2 layer (1 ROOT/subvolume + 1 ROOT/subvolume/SUBROOT/subvolume)
 
-    # usage: ./subvolboot2.sh { create | delete | create-nested }
+    # usage: ./subvolboot2.sh { create | delete | clean-up | create-nested }
 ```
 
 Diagram

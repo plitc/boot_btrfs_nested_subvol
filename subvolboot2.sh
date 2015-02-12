@@ -366,6 +366,69 @@ esac
 #
 ### // stage1 ###
 ;;
+'clean-up')
+### stage1 // ###
+case $DEBIAN in
+debian)
+### stage2 // ###
+
+### // stage2 ###
+#
+### stage3 // ###
+if [ "$MYNAME" = "root" ]; then
+   : # dummy
+else
+   echo "" # dummy
+   echo "" # dummy
+   echo "[Error] You must be root to run this script"
+   exit 1
+fi
+if [ "$DEBVERSION" = "8" ]; then
+   : # dummy
+else
+   echo "" # dummy
+   echo "" # dummy
+   echo "[Error] You need Debian 8 (Jessie) Version"
+   exit 1
+fi
+#
+### stage4 // ###
+#
+## check btrfs rootfilesystem
+BTRFSROOT=$(mount | grep "on / type" | awk '{print $5}')
+if [ "$BTRFSROOT" = "btrfs" ]; then
+   : # dummy
+else
+   echo "[Error] can't find btrfs rootfilesystem"
+   exit 1
+fi
+### ### ### ### ### ### ### ### ###
+
+ROOTSNAPEXIST=$(btrfs subvolume list '/' | grep "ROOT/system-" | awk '{print $9}' | sed 's/ROOT//g' | sed 's/^.//g' | sed 's/\/SUB//g' | sed 's/\// /g' | awk '{print $1}' | sort | uniq)
+SUBROOTSNAPEXIST=$(btrfs subvolume list '/' | grep "ROOT/system-" | awk '{print $9}' | sed 's/ROOT//g' | sed 's/^.//g' | sed 's/\/SUB//g' | sed 's/\// /g' | awk '{print $2}' | sed '/^\s*$/d' | sort | uniq)
+
+find /etc/grub.d/ -name ".40_custom_*" | egrep -v "'$ROOTSNAPEXIST'|'$SUBROOTSNAPEXIST'" | xargs -L1 rm -fv
+#/ find /etc/grub.d/ -name ".40_custom_*" | egrep -v "$SUBROOTSNAPEXIST" | xargs -L1 rm -f
+
+### ### ### ### ### ### ### ### ###
+#
+### // stage4 ###
+#
+### // stage3 ###
+#
+### // stage2 ###
+   ;;
+*)
+   # error 1
+   echo "" # dummy
+   echo "" # dummy
+   echo "[Error] Plattform = unknown"
+   exit 1
+   ;;
+esac
+#
+### // stage1 ###
+;;
 'create-nested')
 ### stage1 // ###
 case $DEBIAN in
@@ -546,7 +609,7 @@ echo ""
 echo "WARNING: subvolboot2 is highly experimental and its not ready for production. Do it at your own risk."
 echo "Current Support: 2 layer (1 ROOT/subvolume + 1 ROOT/subvolume/SUBROOT/subvolume)"
 echo ""
-echo "usage: $0 { create | delete | create-nested }"
+echo "usage: $0 { create | delete | clean-up | create-nested }"
 ;;
 esac
 exit 0
