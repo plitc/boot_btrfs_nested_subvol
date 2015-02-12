@@ -52,18 +52,18 @@ DIALOG=$(/usr/bin/which dialog)
 #
 ### stage3 // ###
 if [ "$MYNAME" = "root" ]; then
-   echo "<--- --- --->"
+   : # dummy
 else
-   echo "<--- --- --->"
-   echo ""
+   echo "" # dummy
+   echo "" # dummy
    echo "[Error] You must be root to run this script"
    exit 1
 fi
 if [ "$DEBVERSION" = "8" ]; then
    : # dummy
 else
-   echo "<--- --- --->"
-   echo ""
+   echo "" # dummy
+   echo "" # dummy
    echo "[Error] You need Debian 8 (Jessie) Version"
    exit 1
 fi
@@ -202,8 +202,8 @@ rm -f /tmp/boot_btrfs_nested_subvol_desc*
    ;;
 *)
    # error 1
-   echo "<--- --- --->"
-   echo ""
+   echo "" # dummy
+   echo "" # dummy
    echo "[Error] Plattform = unknown"
    exit 1
    ;;
@@ -223,24 +223,24 @@ DIALOG=$(/usr/bin/which dialog)
 #
 ### stage3 // ###
 if [ "$MYNAME" = "root" ]; then
-   echo "<--- --- --->"
+   : # dummy
 else
-   echo "<--- --- --->"
-   echo ""
+   echo "" # dummy
+   echo "" # dummy
    echo "[Error] You must be root to run this script"
    exit 1
 fi
 if [ "$DEBVERSION" = "8" ]; then
    : # dummy
 else
-   echo "<--- --- --->"
-   echo ""
+   echo "" # dummy
+   echo "" # dummy
    echo "[Error] You need Debian 8 (Jessie) Version"
    exit 1
 fi
 
 if [ -z "$DIALOG" ]; then
-   echo "<--- --- --->"
+   echo "" # dummy
    echo "need dialog"
    echo "<--- --- --->"
    apt-get update
@@ -357,8 +357,181 @@ esac
    ;;
 *)
    # error 1
+   echo "" # dummy
+   echo "" # dummy
+   echo "[Error] Plattform = unknown"
+   exit 1
+   ;;
+esac
+#
+### // stage1 ###
+;;
+'create-nested')
+### stage1 // ###
+case $DEBIAN in
+debian)
+### stage2 // ###
+
+date +%Y%m%d-%H%M > /tmp/boot_btrfs_nested_subvol_date.txt
+DATE=$(cat /tmp/boot_btrfs_nested_subvol_date.txt)
+DIALOG=$(/usr/bin/which dialog)
+
+### // stage2 ###
+#
+### stage3 // ###
+if [ "$MYNAME" = "root" ]; then
+   : # dummy
+else
+   echo "" # dummy
+   echo "" # dummy
+   echo "[Error] You must be root to run this script"
+   exit 1
+fi
+if [ "$DEBVERSION" = "8" ]; then
+   : # dummy
+else
+   echo "" # dummy
+   echo "" # dummy
+   echo "[Error] You need Debian 8 (Jessie) Version"
+   exit 1
+fi
+
+if [ -z "$DIALOG" ]; then
    echo "<--- --- --->"
-   echo ""
+   echo "need dialog"
+   echo "<--- --- --->"
+   apt-get update
+   apt-get install dialog
+   echo "<--- --- --->"
+fi
+#
+### stage4 // ###
+#
+## check btrfs rootfilesystem
+BTRFSROOT=$(mount | grep "on / type" | awk '{print $5}')
+if [ "$BTRFSROOT" = "btrfs" ]; then
+   : # dummy
+else
+   echo "[Error] can't find btrfs rootfilesystem"
+   exit 1
+fi
+## check default subvolume
+BTRFSVOL1=$(btrfs subvolume list '/' | grep -c "level")
+if [ "$BTRFSVOL1" -ge "1" ]; then
+   : # dummy
+else
+   echo "[Error] won't create new subvolume snapshots inside other subvolume snapshots"
+   exit 1
+fi
+## check default subvolume 2
+BTRFSVOL2=$(btrfs subvolume show / | awk '{print $4}')
+if [ "$BTRFSVOL2" = "root" ]; then
+   : # dummy
+else
+   echo "[Error] won't create new subvolume snapshots inside other subvolume snapshots"
+   exit 1
+fi
+## check ROOT subvolume
+BTRFSSUBVOL=$(btrfs subvolume list '/ROOT' | grep -c "ROOT")
+if [ "$BTRFSSUBVOL" = "1" ]; then
+   : # dummy
+else
+   echo "create ROOT subvolume"
+   btrfs subvolume create /ROOT
+fi
+#
+### ### ### ### ### ### ### ### ###
+#
+## create subvolume snapshot
+btrfs subvolume snapshot / /ROOT/system-"$DATE"
+if [ "$?" != "0" ]; then
+   echo "" # dummy
+   echo "[Error] subvolume snapshot exists!" 1>&2
+   exit 1
+fi
+#
+# snapshot description
+SNAPDESC1="/tmp/boot_btrfs_nested_subvol_desc1.txt"
+SNAPDESC2="/tmp/boot_btrfs_nested_subvol_desc2.txt"
+/bin/echo "test" > "$SNAPDESC1"
+dialog --title "Snapshot Description" --backtitle "Snapshot Description" --inputbox "Enter a short snapshot description: (for example: test)" 8 60 "$(cat $SNAPDESC1)" 2>$SNAPDESC2
+snapdesc1=$?
+case $snapdesc1 in
+   0)
+SNAPDESC3=$(sed 's/#//g' "$SNAPDESC2" | sed 's/%//g' | sed 's/ //g')
+#
+## modify subvol fstab
+sed -i '/\/ *btrfs/s/defaults/defaults,subvol=ROOT\/system-'$DATE'/' /ROOT/system-"$DATE"/etc/fstab
+#
+## modify grub
+cp /etc/grub.d/40_custom /etc/grub.d/.40_custom_bk_pre_system-"$DATE"
+awk "/menuentry 'Debian GNU\/Linux'/,/}/" /boot/grub/grub.cfg > /etc/grub.d/.40_custom_mod1_system-"$DATE"
+#
+sed -i '/menuentry/s/Linux/Linux -- snapshot '$DATE' -- '$SNAPDESC3'/' /etc/grub.d/.40_custom_mod1_system-"$DATE"
+#
+sed -i '/vmlinuz/s/$/ rootflags=subvol=ROOT\/system-'$DATE'/' /etc/grub.d/.40_custom_mod1_system-"$DATE"
+sed -i '1i\### -- snapshot '$DATE'' /etc/grub.d/.40_custom_mod1_system-"$DATE"
+sed -i 's/quiet//g' /etc/grub.d/.40_custom_mod1_system-"$DATE"
+#
+### (merge grub)
+cat /etc/grub.d/.40_custom_mod1_system-"$DATE" >> /etc/grub.d/40_custom
+cp -f /etc/grub.d/40_custom /ROOT/system-"$DATE"/etc/grub.d/40_custom
+#
+### grub update
+echo "" # dummy
+sleep 2
+grub-mkconfig
+echo "" # dummy
+sleep 2
+update-grub
+if [ "$?" != "0" ]; then
+   echo "" # dummy
+   echo "[Error] something goes wrong let's restore the old configuration!" 1>&2
+   cp -f /etc/grub.d/.40_custom_bk_pre_system-"$DATE" cp /etc/grub.d/40_custom
+   echo "" # dummy
+   sleep 2
+   grub-mkconfig
+   echo "" # dummy
+   sleep 2
+   update-grub
+   exit 1
+fi
+#
+;;
+   1)
+      /bin/echo "" # dummy
+      /bin/echo "" # dummy
+      btrfs subvolume delete /ROOT/system-"$DATE"
+      /bin/echo "" # dummy
+      /bin/echo "[Error] abort."
+      #/ /bin/echo "ERROR:"
+      exit 0
+;;
+   255)
+      /bin/echo "" # dummy
+      /bin/echo "" # dummy
+      btrfs subvolume delete /ROOT/system-"$DATE"
+      /bin/echo "" # dummy
+      /bin/echo "[ESC] key pressed."
+      exit 0
+;;
+esac
+#
+# clean up
+rm -f /tmp/boot_btrfs_nested_subvol_desc*
+#
+### ### ### ### ### ### ### ### ###
+#
+### // stage4 ###
+#
+### // stage3 ###
+#
+### // stage2 ###
+   ;;
+*)
+   # error 1
+   echo "" # dummy
+   echo "" # dummy
    echo "[Error] Plattform = unknown"
    exit 1
    ;;
@@ -370,7 +543,7 @@ esac
 echo ""
 echo "WARNING: subvolboot2 is highly experimental and its not ready for production. Do it at your own risk."
 echo ""
-echo "usage: $0 { create | delete }"
+echo "usage: $0 { create | delete | create-nested }"
 ;;
 esac
 exit 0
