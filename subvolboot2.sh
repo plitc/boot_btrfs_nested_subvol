@@ -44,10 +44,8 @@ case $DEBIAN in
 debian)
 ### stage2 // ###
 
-#/ DATE=$(date +%Y%m%d-%H%M)
 date +%Y%m%d-%H%M > /tmp/boot_btrfs_nested_subvol_date.txt
-DATE=$(cat /tmp/boot_btrfs_subvol_date.txt)
-
+DATE=$(cat /tmp/boot_btrfs_nested_subvol_date.txt)
 DIALOG=$(/usr/bin/which dialog)
 
 ### // stage2 ###
