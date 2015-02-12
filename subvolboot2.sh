@@ -431,24 +431,26 @@ if [ "$BTRFSVOL2" = "root" ]; then
 else
    : # dummy
 fi
-## check ROOT subvolume
-BTRFSSUBVOL=$(btrfs subvolume list '/ROOT' | grep -c "ROOT")
+## check SUBROOT subvolume
+BTRFSSUBVOL=$(btrfs subvolume list '/SUBROOT' | grep -c "SUBROOT")
 if [ "$BTRFSSUBVOL" = "1" ]; then
    : # dummy
 else
-   echo "create ROOT subvolume"
-   btrfs subvolume create /ROOT
+   echo "create SUBROOT subvolume"
+   btrfs subvolume create /SUBROOT
 fi
 #
 ### ### ### ### ### ### ### ### ###
 #
 ## create subvolume snapshot
-btrfs subvolume snapshot / /ROOT/system-"$DATE"
+btrfs subvolume snapshot / /SUBROOT/system-"$DATE"
 if [ "$?" != "0" ]; then
    echo "" # dummy
    echo "[Error] subvolume snapshot exists!" 1>&2
    exit 1
 fi
+#
+exit 1 # !!!
 #
 # snapshot description
 SNAPDESC1="/tmp/boot_btrfs_nested_subvol_desc1.txt"
