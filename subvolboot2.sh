@@ -123,8 +123,8 @@ if [ "$?" != "0" ]; then
 fi
 #
 # snapshot description
-SNAPDESC1="/tmp/boot_btrfs_subvol_desc1.txt"
-SNAPDESC2="/tmp/boot_btrfs_subvol_desc2.txt"
+SNAPDESC1="/tmp/boot_btrfs_nested_subvol_desc1.txt"
+SNAPDESC2="/tmp/boot_btrfs_nested_subvol_desc2.txt"
 /bin/echo "test" > "$SNAPDESC1"
 dialog --title "Snapshot Description" --backtitle "Snapshot Description" --inputbox "Enter a short snapshot description: (for example: test)" 8 60 "$(cat $SNAPDESC1)" 2>$SNAPDESC2
 snapdesc1=$?
@@ -190,7 +190,7 @@ fi
 esac
 #
 # clean up
-rm -f /tmp/boot_btrfs_subvol_desc*
+rm -f /tmp/boot_btrfs_nested_subvol_desc*
 #
 ### ### ### ### ### ### ### ### ###
 #
@@ -285,27 +285,27 @@ fi
 #
 ### ### ### ### ### ### ### ### ###
 
-LISTSNAPFILE1="/tmp/boot_btrfs_subvol_del1.txt"
-LISTSNAPFILE2="/tmp/boot_btrfs_subvol_del2.txt"
-LISTSNAPFILE3="/tmp/boot_btrfs_subvol_del3.txt"
+LISTSNAPFILE1="/tmp/boot_btrfs_nested_subvol_del1.txt"
+LISTSNAPFILE2="/tmp/boot_btrfs_nested_subvol_del2.txt"
+LISTSNAPFILE3="/tmp/boot_btrfs_nested_subvol_del3.txt"
 
 btrfs subvolume list '/' | grep "ROOT/system-" | awk '{print $9}' > $LISTSNAPFILE1
 nl $LISTSNAPFILE1 | sed 's/ //g' > $LISTSNAPFILE2
 /bin/sed 's/$/ off/' $LISTSNAPFILE2 > $LISTSNAPFILE3
 
-LISTSNAPFILE5="/tmp/boot_btrfs_subvol_del5.txt"
+LISTSNAPFILE5="/tmp/boot_btrfs_nested_subvol_del5.txt"
 dialog --radiolist "Choose one subvolume to delete:" 45 45 45 --file "$LISTSNAPFILE3" 2>$LISTSNAPFILE5
 snapdel1=$?
 case $snapdel1 in
    0)
-LISTSNAPFILE5CHECK=$(cat /tmp/boot_btrfs_subvol_del5.txt)
+LISTSNAPFILE5CHECK=$(cat /tmp/boot_btrfs_nested_subvol_del5.txt)
 if [ -z "$LISTSNAPFILE5CHECK" ]; then
       /bin/echo "" # dummy
       /bin/echo "" # dummy
       /bin/echo "[Error] nothing selected"
       exit 1
 fi
-LISTSNAPFILE6="/tmp/boot_btrfs_subvol_del6.txt"
+LISTSNAPFILE6="/tmp/boot_btrfs_nested_subvol_del6.txt"
 awk 'NR==FNR {h[$1] = $2; next} {print $1,$2,h[$1]}' "$LISTSNAPFILE3" "$LISTSNAPFILE5" | awk '{print $2}' | sed 's/"//g' > "$LISTSNAPFILE6"
 ### ### ###
 #
@@ -330,7 +330,7 @@ echo "" # dummy
 btrfs subvolume delete /"$SNAPDELFULL"
 #
 # clean up
-rm -f /tmp/boot_btrfs_subvol_del*
+rm -f /tmp/boot_btrfs_nested_subvol_del*
 ### ### ###
 ;;
    1)

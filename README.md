@@ -30,7 +30,7 @@ Platform
 Usage
 =====
 ```
-    WARNING: subvolboot is highly experimental and its not ready for production. Do it at your own risk.
+    WARNING: subvolboot2 is highly experimental and its not ready for production. Do it at your own risk.
 
     # usage: ./subvolboot2.sh { create | delete }
 ```
