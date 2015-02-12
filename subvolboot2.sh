@@ -450,7 +450,7 @@ if [ "$?" != "0" ]; then
    exit 1
 fi
 #
-exit 1 # !!!
+CURRDEEP=$(btrfs subvolume show '/' | grep "Name" | awk '{print $2}')
 #
 # snapshot description
 SNAPDESC1="/tmp/boot_btrfs_nested_subvol_desc1.txt"
@@ -463,21 +463,21 @@ case $snapdesc1 in
 SNAPDESC3=$(sed 's/#//g' "$SNAPDESC2" | sed 's/%//g' | sed 's/ //g')
 #
 ## modify subvol fstab
-sed -i '/\/ *btrfs/s/defaults/defaults,subvol=ROOT\/system-'$DATE'/' /ROOT/system-"$DATE"/etc/fstab
+sed -i '/\/ *btrfs/s/defaults,subvol=ROOT\/'$CURRDEEP'/defaults,subvol=ROOT\/'$CURRDEEP'\/SUBROOT\/system-'$DATE'/' /SUBROOT/system-"$DATE"/etc/fstab
 #
 ## modify grub
-cp /etc/grub.d/40_custom /etc/grub.d/.40_custom_bk_pre_system-"$DATE"
-awk "/menuentry 'Debian GNU\/Linux'/,/}/" /boot/grub/grub.cfg > /etc/grub.d/.40_custom_mod1_system-"$DATE"
+cp /etc/grub.d/40_custom /etc/grub.d/.40_custom_bk_pre_subroot_system-"$DATE"
+awk "/menuentry 'Debian GNU\/Linux'/,/}/" /boot/grub/grub.cfg > /etc/grub.d/.40_custom_mod1_subroot_system-"$DATE"
 #
-sed -i '/menuentry/s/Linux/Linux -- snapshot '$DATE' -- '$SNAPDESC3'/' /etc/grub.d/.40_custom_mod1_system-"$DATE"
+sed -i '/menuentry/s/Linux/Linux -- snapshot '$CURRDEEP' subroot '$DATE' -- '$SNAPDESC3'/' /etc/grub.d/.40_custom_mod1_subroot_system-"$DATE"
 #
-sed -i '/vmlinuz/s/$/ rootflags=subvol=ROOT\/system-'$DATE'/' /etc/grub.d/.40_custom_mod1_system-"$DATE"
-sed -i '1i\### -- snapshot '$DATE'' /etc/grub.d/.40_custom_mod1_system-"$DATE"
-sed -i 's/quiet//g' /etc/grub.d/.40_custom_mod1_system-"$DATE"
+sed -i '/vmlinuz/s/$/ rootflags=subvol=ROOT\/'$CURRDEEP'\/SUBROOT\/system-'$DATE'/' /etc/grub.d/.40_custom_mod1_subroot_system-"$DATE"
+sed -i '1i\### -- snapshot '$DATE'' /etc/grub.d/.40_custom_mod1_subroot_system-"$DATE"
+sed -i 's/quiet//g' /etc/grub.d/.40_custom_mod1_subroot_system-"$DATE"
 #
 ### (merge grub)
-cat /etc/grub.d/.40_custom_mod1_system-"$DATE" >> /etc/grub.d/40_custom
-cp -f /etc/grub.d/40_custom /ROOT/system-"$DATE"/etc/grub.d/40_custom
+cat /etc/grub.d/.40_custom_mod1_subroot_system-"$DATE" >> /etc/grub.d/40_custom
+cp -f /etc/grub.d/40_custom /SUBROOT/system-"$DATE"/etc/grub.d/40_custom
 #
 ### grub update
 echo "" # dummy
@@ -489,7 +489,7 @@ update-grub
 if [ "$?" != "0" ]; then
    echo "" # dummy
    echo "[Error] something goes wrong let's restore the old configuration!" 1>&2
-   cp -f /etc/grub.d/.40_custom_bk_pre_system-"$DATE" cp /etc/grub.d/40_custom
+   cp -f /etc/grub.d/.40_custom_bk_pre_subroot_system-"$DATE" cp /etc/grub.d/40_custom
    echo "" # dummy
    sleep 2
    grub-mkconfig
@@ -503,7 +503,7 @@ fi
    1)
       /bin/echo "" # dummy
       /bin/echo "" # dummy
-      btrfs subvolume delete /ROOT/system-"$DATE"
+      btrfs subvolume delete /SUBROOT/system-"$DATE"
       /bin/echo "" # dummy
       /bin/echo "[Error] abort."
       #/ /bin/echo "ERROR:"
@@ -512,7 +512,7 @@ fi
    255)
       /bin/echo "" # dummy
       /bin/echo "" # dummy
-      btrfs subvolume delete /ROOT/system-"$DATE"
+      btrfs subvolume delete /SUBROOT/system-"$DATE"
       /bin/echo "" # dummy
       /bin/echo "[ESC] key pressed."
       exit 0
