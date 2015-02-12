@@ -1,12 +1,12 @@
 
 Background
 ==========
-* create very simple and fast btrfs subvolume snapshot boot environments
 * based on boot_btrfs_subvol (prototype 0.8)
+* create very simple and fast btrfs subvolume snapshot boot environments
 
 Benefit
 =======
-* contrary to the linear snapshots under zfs, btrfs can create nested snapshots
+* contrary to the linear rw snapshots under zfs (zfs clone), btrfs can create/delete nested snapshots (subvolume snapshots)
 
 WARNING
 =======
@@ -32,13 +32,15 @@ Usage
 ```
     WARNING: subvolboot is highly experimental and its not ready for production. Do it at your own risk.
 
-    # usage: ./subvolboot.sh { create | delete }
+    # usage: ./subvolboot2.sh { create | delete }
 ```
 
 Diagram
 =======
 * boot_btrfs_subvol (prototype 0.8)
 ![plitc_debian8_luks_lvm_boot_btrfs_subvol](/content/plitc_debian8_luks_lvm_boot_btrfs_subvol.jpg)
+
+* boot_btrfs_nested_subvol (prototype > 0.8)
 
 Screencast
 ==========
