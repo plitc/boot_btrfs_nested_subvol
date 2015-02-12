@@ -1,7 +1,16 @@
 
 Background
 ==========
-create very simple and fast btrfs subvolume snapshot boot environments
+* create very simple and fast btrfs subvolume snapshot boot environments
+* based on boot_btrfs_subvol (prototype 0.8)
+
+Benefit
+=======
+* contrary to the linear snapshots under zfs, btrfs can create nested snapshots
+
+WARNING
+=======
+* dependents on the kernel version, btrfs-tools version, bugfixes and the use of serious functions such as balance, raid5, compression, etc. can delete the complex structures under some circumstances lead to data loss
 
 Dependencies
 ============
@@ -12,6 +21,7 @@ Dependencies
 Features
 ========
 * create root subvolume snapshot and grub entry
+* create nested subvolume snapshot environments
 
 Platform
 ========
@@ -27,6 +37,7 @@ Usage
 
 Diagram
 =======
+* boot_btrfs_subvol (prototype 0.8)
 ![plitc_debian8_luks_lvm_boot_btrfs_subvol](/content/plitc_debian8_luks_lvm_boot_btrfs_subvol.jpg)
 
 Screencast
