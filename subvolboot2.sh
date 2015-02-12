@@ -544,6 +544,7 @@ esac
 *)
 echo ""
 echo "WARNING: subvolboot2 is highly experimental and its not ready for production. Do it at your own risk."
+echo "Current Support: 2 layer (1 ROOT/subvolume + 1 ROOT/subvolume/SUBROOT/subvolume)"
 echo ""
 echo "usage: $0 { create | delete | create-nested }"
 ;;
