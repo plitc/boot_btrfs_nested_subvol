@@ -50,5 +50,5 @@ Screencast
 Errata
 ======
 * 12.02.2015 - need lvm (logical volume) name "-system" (FIXED)
-* 11.02.2015 - parsing error after minute swap
+* 11.02.2015 - parsing error after minute swap (FIXED)
 
