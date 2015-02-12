@@ -53,6 +53,7 @@ Screencast
 
 Errata
 ======
+* 12.02.2015 - "./subvolboot2.sh delete" function delete nested-subvolume only in parent dataset environment
 * 12.02.2015 - need lvm (logical volume) name "-system" (FIXED)
 * 11.02.2015 - parsing error after minute swap (FIXED)
 
