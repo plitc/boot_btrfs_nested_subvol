@@ -403,13 +403,10 @@ else
    exit 1
 fi
 ### ### ### ### ### ### ### ### ###
-
 ROOTSNAPEXIST=$(btrfs subvolume list '/' | grep "ROOT/system-" | awk '{print $9}' | sed 's/ROOT//g' | sed 's/^.//g' | sed 's/\/SUB//g' | sed 's/\// /g' | awk '{print $1}' | sort | uniq)
 SUBROOTSNAPEXIST=$(btrfs subvolume list '/' | grep "ROOT/system-" | awk '{print $9}' | sed 's/ROOT//g' | sed 's/^.//g' | sed 's/\/SUB//g' | sed 's/\// /g' | awk '{print $2}' | sed '/^\s*$/d' | sort | uniq)
 
-find /etc/grub.d/ -name ".40_custom_*" | egrep -v "'$ROOTSNAPEXIST'|'$SUBROOTSNAPEXIST'" | xargs -L1 rm -fv
-#/ find /etc/grub.d/ -name ".40_custom_*" | egrep -v "$SUBROOTSNAPEXIST" | xargs -L1 rm -f
-
+find /etc/grub.d/ -name ".40_custom_*" | egrep -v "$ROOTSNAPEXIST|$SUBROOTSNAPEXIST" | xargs -L1 rm -fv
 ### ### ### ### ### ### ### ### ###
 #
 ### // stage4 ###
