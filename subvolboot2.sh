@@ -173,11 +173,16 @@ fi
    1)
       /bin/echo "" # dummy
       /bin/echo "" # dummy
+      btrfs subvolume delete /ROOT/system-"$DATE"
+      /bin/echo "" # dummy
+      /bin/echo "[Error] abort."
       #/ /bin/echo "ERROR:"
       exit 0
 ;;
    255)
       /bin/echo "" # dummy
+      /bin/echo "" # dummy
+      btrfs subvolume delete /ROOT/system-"$DATE"
       /bin/echo "" # dummy
       /bin/echo "[ESC] key pressed."
       exit 0
