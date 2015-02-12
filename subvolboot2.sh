@@ -127,6 +127,9 @@ SNAPDESC1="/tmp/boot_btrfs_subvol_desc1.txt"
 SNAPDESC2="/tmp/boot_btrfs_subvol_desc2.txt"
 /bin/echo "test" > "$SNAPDESC1"
 dialog --title "Snapshot Description" --backtitle "Snapshot Description" --inputbox "Enter a short snapshot description: (for example: test)" 8 60 "$(cat $SNAPDESC1)" 2>$SNAPDESC2
+snapdesc1=$?
+case $snapdesc1 in
+   0)
 SNAPDESC3=$(sed 's/#//g' "$SNAPDESC2" | sed 's/%//g' | sed 's/ //g')
 #
 ## modify subvol fstab
@@ -165,6 +168,21 @@ if [ "$?" != "0" ]; then
    update-grub
    exit 1
 fi
+#
+;;
+   1)
+      /bin/echo "" # dummy
+      /bin/echo "" # dummy
+      #/ /bin/echo "ERROR:"
+      exit 0
+;;
+   255)
+      /bin/echo "" # dummy
+      /bin/echo "" # dummy
+      /bin/echo "[ESC] key pressed."
+      exit 0
+;;
+esac
 #
 # clean up
 rm -f /tmp/boot_btrfs_subvol_desc*
