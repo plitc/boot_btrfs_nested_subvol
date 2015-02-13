@@ -316,6 +316,8 @@ SNAPDELFULL=$(cat "$LISTSNAPFILE6")
 cp -f /etc/grub.d/.40_custom_bk_pre_"$SNAPDEL" /etc/grub.d/40_custom
 if [ "$?" != "0" ]; then
    echo "" # dummy
+   btrfs subvolume delete /"$SNAPDELFULL"
+   echo "" # dummy
    echo "[Error] backup config disappeared!" 1>&2
    exit 1
 fi

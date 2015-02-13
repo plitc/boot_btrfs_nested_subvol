@@ -53,7 +53,9 @@ Screencast
 
 Errata
 ======
-* 12.02.2015 - "delete" function for nested-subvolume works in parent dataset environments only
+* 14.02.2015 - !!! - can't delete SUBROOT subvolumes reasonable
+* 14.02.2015 - !!! - under certain circumstances can't parse all custom grub entries
+* 12.02.2015 - !!! - "delete" function for nested-subvolume works in parent dataset environments only
 * 12.02.2015 - need lvm (logical volume) name "-system" (FIXED)
 * 11.02.2015 - parsing error after minute swap (FIXED)
 
