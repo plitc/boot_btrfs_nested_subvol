@@ -15,7 +15,7 @@ WARNING
 Dependencies
 ============
 * Linux (Debian)
-   * machine with btrfs
+   * machine with btrfs (create manually a /ROOT subvolume with "btrfs subvolume create /ROOT")
    * dialog
 
 Features
