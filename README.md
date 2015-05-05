@@ -2,6 +2,7 @@
 Background
 ==========
 * based on boot_btrfs_subvol (prototype 0.8)
+
 * create very simple and fast btrfs subvolume snapshot boot environments
 
 Benefits of Goal Setting
@@ -15,12 +16,15 @@ WARNING
 Dependencies
 ============
 * Linux (Debian)
-   * machine with btrfs (create manually a /ROOT subvolume with "btrfs subvolume create /ROOT")
+   * machine with btrfs
+      * (create manually a /ROOT subvolume with "btrfs subvolume create /ROOT")
+
    * dialog
 
 Features
 ========
 * create root subvolume snapshot and grub entry
+
 * create nested subvolume snapshot environments
    * current support: 2 layer = 1 (ROOT/subvolume) + 1 (ROOT/subvolume/SUBROOT/subvolume)
 
