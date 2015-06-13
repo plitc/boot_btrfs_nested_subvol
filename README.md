@@ -30,7 +30,8 @@ Features
 
 Platform
 ========
-* Linux (Debian 7/Wheezy) - ! it is strongly recommended to use kernel 3.16 from wheezy-backports !
+* Linux (Debian 7/Wheezy)
+  * ! it is strongly recommended to use kernel 3.16 from wheezy-backports !
 * Linux (Debian 8/Jessie) - recommended
 * Linux (Debian 9/Stretch-Testing) - recommended
 
