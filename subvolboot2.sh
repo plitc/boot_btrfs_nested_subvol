@@ -70,7 +70,7 @@ else
        else
           echo "" # dummy
           echo "" # dummy
-          echo "[Error] You need Debian 7 (Wheezy) or 8 (Jessie) or 9 (Snetch) Version"
+          echo "[Error] You need Debian 7 (Wheezy) or 8 (Jessie) or 9 (Stretch) Version"
           exit 1
        fi
    fi
@@ -248,7 +248,7 @@ else
       else
          echo "" # dummy
          echo "" # dummy
-         echo "[Error] You need Debian 7 (Wheezy) or 8 (Jessie) or 9 (Snetch) Version"
+         echo "[Error] You need Debian 7 (Wheezy) or 8 (Jessie) or 9 (Stretch) Version"
          exit 1
       fi
    fi
@@ -415,7 +415,7 @@ else
       else
          echo "" # dummy
          echo "" # dummy
-         echo "[Error] You need Debian 7 (Wheezy) or 8 (Jessie) or 9 (Snetch) Version"
+         echo "[Error] You need Debian 7 (Wheezy) or 8 (Jessie) or 9 (Stretch) Version"
          exit 1
       fi
    fi
@@ -494,7 +494,7 @@ else
       else
          echo "" # dummy
          echo "" # dummy
-         echo "[Error] You need Debian 7 (Wheezy) or 8 (Jessie) or 9 (Snetch) Version"
+         echo "[Error] You need Debian 7 (Wheezy) or 8 (Jessie) or 9 (Stretch) Version"
          exit 1
       fi
    fi
