@@ -59,15 +59,22 @@ else
    echo "[Error] You must be root to run this script"
    exit 1
 fi
-if [ "$DEBVERSION" = "8" ]; then
+if [ "$DEBVERSION" = "7" ]; then
    : # dummy
 else
-   echo "" # dummy
-   echo "" # dummy
-   echo "[Error] You need Debian 8 (Jessie) Version"
-   exit 1
+   if [ "$DEBVERSION" = "8" ]; then
+       : # dummy
+   else
+       if [ "$DEBVERSION" = "9" ]; then
+          : # dummy
+       else
+          echo "" # dummy
+          echo "" # dummy
+          echo "[Error] You need Debian 7 (Wheezy) or 8 (Jessie) or 9 (Snetch) Version"
+          exit 1
+       fi
+   fi
 fi
-
 if [ -z "$DIALOG" ]; then
    echo "<--- --- --->"
    echo "need dialog"
@@ -230,15 +237,22 @@ else
    echo "[Error] You must be root to run this script"
    exit 1
 fi
-if [ "$DEBVERSION" = "8" ]; then
+if [ "$DEBVERSION" = "7" ]; then
    : # dummy
 else
-   echo "" # dummy
-   echo "" # dummy
-   echo "[Error] You need Debian 8 (Jessie) Version"
-   exit 1
+   if [ "$DEBVERSION" = "8" ]; then
+      : # dummy
+   else
+      if [ "$DEBVERSION" = "9" ]; then
+         : # dummy
+      else
+         echo "" # dummy
+         echo "" # dummy
+         echo "[Error] You need Debian 7 (Wheezy) or 8 (Jessie) or 9 (Snetch) Version"
+         exit 1
+      fi
+   fi
 fi
-
 if [ -z "$DIALOG" ]; then
    echo "" # dummy
    echo "need dialog"
@@ -390,13 +404,21 @@ else
    echo "[Error] You must be root to run this script"
    exit 1
 fi
-if [ "$DEBVERSION" = "8" ]; then
+if [ "$DEBVERSION" = "7" ]; then
    : # dummy
 else
-   echo "" # dummy
-   echo "" # dummy
-   echo "[Error] You need Debian 8 (Jessie) Version"
-   exit 1
+   if [ "$DEBVERSION" = "8" ]; then
+      : # dummy
+   else
+      if [ "$DEBVERSION" = "9" ]; then
+         : # dummy
+      else
+         echo "" # dummy
+         echo "" # dummy
+         echo "[Error] You need Debian 7 (Wheezy) or 8 (Jessie) or 9 (Snetch) Version"
+         exit 1
+      fi
+   fi
 fi
 #
 ### stage4 // ###
@@ -461,15 +483,22 @@ else
    echo "[Error] You must be root to run this script"
    exit 1
 fi
-if [ "$DEBVERSION" = "8" ]; then
+if [ "$DEBVERSION" = "7" ]; then
    : # dummy
 else
-   echo "" # dummy
-   echo "" # dummy
-   echo "[Error] You need Debian 8 (Jessie) Version"
-   exit 1
+   if [ "$DEBVERSION" = "8" ]; then
+      : # dummy
+   else
+      if [ "$DEBVERSION" = "9" ]; then
+         : # dummy
+      else
+         echo "" # dummy
+         echo "" # dummy
+         echo "[Error] You need Debian 7 (Wheezy) or 8 (Jessie) or 9 (Snetch) Version"
+         exit 1
+      fi
+   fi
 fi
-
 if [ -z "$DIALOG" ]; then
    echo "<--- --- --->"
    echo "need dialog"
