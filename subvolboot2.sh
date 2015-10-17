@@ -34,6 +34,9 @@
 ### stage0 // ###
 DEBIAN=$(grep "ID" /etc/os-release | egrep -v "VERSION" | sed 's/ID=//g')
 DEBVERSION=$(grep "VERSION_ID" /etc/os-release | sed 's/VERSION_ID=//g' | sed 's/"//g')
+if [ -z "$DEBVERSION" ]; then
+   DEBVERSION9=$(grep -c "stretch" /etc/os-release | sed 's/1/9/g')
+fi
 MYNAME=$(whoami)
 ### // stage0 ###
 
@@ -68,10 +71,14 @@ else
        if [ "$DEBVERSION" = "9" ]; then
           : # dummy
        else
-          echo "" # dummy
-          echo "" # dummy
-          echo "[Error] You need Debian 7 (Wheezy) or 8 (Jessie) or 9 (Stretch) Version"
-          exit 1
+          if [ "$DEBVERSION9" = "9" ]; then
+             : # dummy
+          else
+             echo "" # dummy
+             echo "" # dummy
+             echo "[Error] You need Debian 7 (Wheezy) or 8 (Jessie) or 9 (Stretch) Version"
+             exit 1
+          fi
        fi
    fi
 fi
@@ -246,10 +253,14 @@ else
       if [ "$DEBVERSION" = "9" ]; then
          : # dummy
       else
-         echo "" # dummy
-         echo "" # dummy
-         echo "[Error] You need Debian 7 (Wheezy) or 8 (Jessie) or 9 (Stretch) Version"
-         exit 1
+         if [ "$DEBVERSION9" = "9" ]; then
+            : # dummy
+         else
+            echo "" # dummy
+            echo "" # dummy
+            echo "[Error] You need Debian 7 (Wheezy) or 8 (Jessie) or 9 (Stretch) Version"
+            exit 1
+         fi
       fi
    fi
 fi
@@ -413,10 +424,14 @@ else
       if [ "$DEBVERSION" = "9" ]; then
          : # dummy
       else
-         echo "" # dummy
-         echo "" # dummy
-         echo "[Error] You need Debian 7 (Wheezy) or 8 (Jessie) or 9 (Stretch) Version"
-         exit 1
+         if [ "$DEBVERSION9" = "9" ]; then
+            : # dummy
+         else
+            echo "" # dummy
+            echo "" # dummy
+            echo "[Error] You need Debian 7 (Wheezy) or 8 (Jessie) or 9 (Stretch) Version"
+            exit 1
+         fi
       fi
    fi
 fi
@@ -492,10 +507,14 @@ else
       if [ "$DEBVERSION" = "9" ]; then
          : # dummy
       else
-         echo "" # dummy
-         echo "" # dummy
-         echo "[Error] You need Debian 7 (Wheezy) or 8 (Jessie) or 9 (Stretch) Version"
-         exit 1
+         if [ "$DEBVERSION9" = "9" ]; then
+            : # dummy
+         else
+            echo "" # dummy
+            echo "" # dummy
+            echo "[Error] You need Debian 7 (Wheezy) or 8 (Jessie) or 9 (Stretch) Version"
+            exit 1
+         fi
       fi
    fi
 fi
