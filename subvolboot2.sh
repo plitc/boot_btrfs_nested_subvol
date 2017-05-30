@@ -111,7 +111,7 @@ else
 fi
 ## check default subvolume 2
 BTRFSVOL2=$(btrfs subvolume show '/' | grep -c "root")
-if [ "$BTRFSVOL2" = "1" ]; then
+if [ "$BTRFSVOL2" = "0" ]; then
    : # dummy
 else
    echo "[Error] won't create new subvolume snapshots inside other subvolume snapshots"
@@ -292,8 +292,8 @@ else
    exit 1
 fi
 ## check default subvolume 2
-BTRFSVOL2=$(btrfs subvolume show / | grep -c "root")
-if [ "$BTRFSVOL2" = "1" ]; then
+BTRFSVOL2=$(btrfs subvolume show '/' | grep -c "root")
+if [ "$BTRFSVOL2" = "0" ]; then
    : # dummy
 else
    echo "[Error] won't delete the current subvolume snapshot inside another one"
