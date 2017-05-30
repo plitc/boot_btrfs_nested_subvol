@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -x
 
 ### LICENSE // ###
 #
@@ -110,8 +110,8 @@ else
    exit 1
 fi
 ## check default subvolume 2
-BTRFSVOL2=$(btrfs subvolume show '/' | awk '{print $4}' | grep "root")
-if [ "$BTRFSVOL2" = "root" ]; then
+BTRFSVOL2=$(btrfs subvolume show '/' | grep -c "root")
+if [ "$BTRFSVOL2" = "1" ]; then
    : # dummy
 else
    echo "[Error] won't create new subvolume snapshots inside other subvolume snapshots"
@@ -292,8 +292,8 @@ else
    exit 1
 fi
 ## check default subvolume 2
-BTRFSVOL2=$(btrfs subvolume show / | awk '{print $4}')
-if [ "$BTRFSVOL2" = "root" ]; then
+BTRFSVOL2=$(btrfs subvolume show / | grep -c "root")
+if [ "$BTRFSVOL2" = "1" ]; then
    : # dummy
 else
    echo "[Error] won't delete the current subvolume snapshot inside another one"
@@ -546,8 +546,8 @@ else
    exit 1
 fi
 ## check default subvolume 2
-BTRFSVOL2=$(btrfs subvolume show '/' | awk '{print $4}' | grep "root")
-if [ "$BTRFSVOL2" = "root" ]; then
+BTRFSVOL2=$(btrfs subvolume show '/' | grep -c "root")
+if [ "$BTRFSVOL2" = "1" ]; then
    echo "[Error] won't create new subvolume snapshots on top of the ROOT subvolume, please use the 'create' command"
    exit 1
 else
